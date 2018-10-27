@@ -3,10 +3,55 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
         xmlns:local="clr-namespace:WpfApp2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        WindowStyle="SingleBorderWindow"
+        Title="MainWindow" Height="600" Width="800"
+        DataContext="{Binding Source={StaticResource Locator}, Path=BookSectionViewModel}">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Background="Yellow">
+            <Button Content="播放" Width="100" Height="30" Background="Red" x:Name="BtnPlay" >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <ei:CallMethodAction 
+                            TargetObject="{Binding}"
+                            MethodName="PlayBookSection"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <Button Content="暂停" Width="100" Height="30" x:Name="BtnPause" Command="{Binding PauseBookSectionCommand}"/>
+            <Button Content="继续" Width="100" Height="30" x:Name="BtnResume" Command="{Binding ResumeBookSectionCommand}"/>
+            <Button Content="停止" Width="100" Height="30" x:Name="BtnStop" Command="{Binding StopBookSectionCommand}"/>
+            <Button Content="test" Width="100" Height="30" x:Name="BtnTest" />
+        </StackPanel>
+
+        <ListBox x:Name="listbox" Grid.Column="0" Grid.Row="1"
+                 ItemsSource="{Binding BookSelectionList}"
+                 SelectedIndex="{Binding SelectedIndex}"  
+                 >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <ei:CallMethodAction TargetObject="{Binding}" MethodName="PlayBookSection"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding Title}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <TextBox Text="{Binding ElementName=listbox, Path=SelectedItem.Content}" Grid.Row="1" Grid.Column="1"></TextBox>
     </Grid>
 </Window>
