@@ -1,2 +1,2 @@
 # helloworld
-SimpleMVVM + Entity Framework Core Demo
+SimpleMVVM + SpeechSynthesizer Demo
