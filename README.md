@@ -1,2 +1,2 @@
 # helloworld
-first project for test.
+SimpleMVVM + Entity Framework Core Demo
